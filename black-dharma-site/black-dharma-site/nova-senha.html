@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Black Dharma · Nova palavra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400&display=swap">
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+  <main class="mini">
+    <div class="box">
+      <svg class="sig" width="48" height="60" viewBox="0 0 62 78" fill="none" style="margin:0 auto">
+        <circle cx="31" cy="39" r="4" fill="#c9ab6e"/><line x1="31" y1="4" x2="31" y2="12" stroke="#c9ab6e" stroke-width="1"/>
+        <g transform="translate(0,20)"><circle cx="31" cy="19" r="18" stroke="#c9ab6e" stroke-width="1.2"/><line x1="31" y1="1" x2="31" y2="37" stroke="#c9ab6e" stroke-width="1.2"/><path d="M31 3 A16 16 0 0 1 31 35 A12.5 19 0 0 0 31 3 Z" fill="#c9ab6e" opacity="0.92"/></g>
+      </svg>
+      <div class="wm">BLACK DHARMA</div>
+      <h2>NOVA PALAVRA</h2>
+      <p class="sub">Defina a nova senha de acesso. Prefira uma frase longa a uma palavra curta.</p>
+
+      <form class="card" id="form" novalidate>
+        <div class="msg" id="msg" role="alert" aria-live="polite"></div>
+        <div class="field">
+          <label for="s1">Nova senha</label>
+          <input id="s1" type="password" autocomplete="new-password" minlength="8" required>
+        </div>
+        <div class="field">
+          <label for="s2">Confirmar</label>
+          <input id="s2" type="password" autocomplete="new-password" minlength="8" required>
+        </div>
+        <button class="btn-gold" type="submit" id="btn">DEFINIR E ENTRAR</button>
+      </form>
+      <div class="back"><a href="index.html">Voltar ao portal</a></div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    // Ao chegar pelo link do e-mail, o Supabase (detectSessionInUrl) já cria
+    // uma sessão temporária que permite trocar a senha.
+    document.getElementById('form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      var msg=document.getElementById('msg'), btn=document.getElementById('btn');
+      var s1=document.getElementById('s1').value, s2=document.getElementById('s2').value;
+      msg.className='msg';
+      if(s1.length<8){msg.className='msg err';msg.textContent='Mínimo de 8 caracteres.';return;}
+      if(s1!==s2){msg.className='msg err';msg.textContent='As senhas não coincidem.';return;}
+      btn.setAttribute('disabled','true');
+      try{
+        if(window.BD_SUPABASE){
+          var r=await window.BD_SUPABASE.auth.updateUser({ password: s1 });
+          if(r.error){msg.className='msg err';msg.textContent='O elo pode ter expirado. Solicite de novo em “Recuperar acesso”.';}
+          else{msg.className='msg ok';msg.textContent='Palavra redefinida. Redirecionando…';setTimeout(function(){location.href='painel.html';},900);}
+        }else{
+          msg.className='msg info';
+          msg.textContent='Modo demonstração: a troca real de senha funciona após ligar o Supabase.';
+        }
+      }catch(err){msg.className='msg err';msg.textContent='Não foi possível concluir agora.';}
+      finally{btn.removeAttribute('disabled');}
+    });
+  </script>
+</body>
+</html>

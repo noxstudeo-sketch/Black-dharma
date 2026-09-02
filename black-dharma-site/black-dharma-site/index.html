@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Black Dharma · Portal de Acesso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400&display=swap">
+  <style>
+    :root{
+      --bg:#040404; --card:#101012; --card-2:#0b0b0d;
+      --gold:#c9ab6e; --gold-hi:#e7d3a2; --gold-deep:#7c6033;
+      --bone:#ece6d8; --muted:#9a9284; --muted-2:#6f6a5e;
+      --line:rgba(201,171,110,0.16);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--bone);
+      font-family:'Cormorant Garamond',Georgia,serif;
+      -webkit-font-smoothing:antialiased; overflow-x:hidden;
+    }
+    a{color:var(--gold);text-decoration:none;transition:color .2s}
+    a:hover{color:var(--gold-hi)}
+
+    .stage{
+      position:relative; min-height:100vh; width:100%;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:56px 20px;
+    }
+    /* subtle central glow */
+    .stage::before{
+      content:""; position:absolute; left:50%; top:38%; width:820px; height:820px;
+      transform:translate(-50%,-50%);
+      background:radial-gradient(circle,rgba(201,171,110,0.06) 0%,rgba(0,0,0,0) 60%);
+      pointer-events:none;
+    }
+
+    /* columns */
+    .pillar{position:absolute; top:50%; transform:translateY(-50%); height:88vh; width:auto; opacity:.9; pointer-events:none}
+    .pillar.left{left:5.5vw}
+    .pillar.right{right:5.5vw; transform:translateY(-50%) scaleX(-1)}
+
+    .inner{position:relative; z-index:2; width:100%; max-width:452px; display:flex; flex-direction:column; align-items:center}
+
+    /* brand */
+    .sigil{width:62px;height:78px;margin-bottom:6px}
+    .wordmark{
+      font-family:'Cinzel',serif; font-weight:500; font-size:clamp(34px,6vw,58px);
+      letter-spacing:.14em; color:#f1ecdf; margin:8px 0 0; padding-left:.14em; text-align:center; line-height:1;
+    }
+    .rule{display:flex;align-items:center;gap:12px;margin:22px 0 30px}
+    .rule .ln{width:88px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-deep))}
+    .rule .ln.r{background:linear-gradient(90deg,var(--gold-deep),transparent)}
+    .rule .dia{width:9px;height:9px;border:1px solid var(--gold);transform:rotate(45deg)}
+
+    /* card */
+    .card{
+      width:100%; background:linear-gradient(180deg,var(--card),var(--card-2));
+      border:1px solid var(--line);
+      border-radius:14px; padding:40px 40px 34px;
+      box-shadow:0 30px 80px -40px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    .card-title{font-family:'Cinzel',serif;font-weight:500;font-size:15px;letter-spacing:.34em;color:#d8d1c1;text-align:center;padding-left:.34em}
+    .node{display:flex;align-items:center;gap:10px;margin:16px 0 28px}
+    .node .ln{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,171,110,0.4),transparent)}
+    .node .dot{width:6px;height:6px;border:1px solid var(--gold);border-radius:50%;flex:none}
+
+    .field{margin-bottom:18px}
+    .field label{display:block;font-family:'Cormorant Garamond',serif;font-size:16px;color:#cfc8b8;margin-bottom:8px;letter-spacing:.02em}
+    .control{position:relative;display:flex;align-items:center}
+    .control .ico{position:absolute;left:15px;width:17px;height:17px;color:var(--muted-2);pointer-events:none}
+    .control input{
+      width:100%; height:50px; background:rgba(255,255,255,0.015);
+      border:1px solid rgba(236,230,216,0.13); border-radius:8px; color:var(--bone);
+      font-family:'Cormorant Garamond',serif; font-size:18px; padding:0 44px; transition:border-color .2s,background .2s;
+    }
+    .control input::placeholder{color:#4f4c45}
+    .control input:focus{outline:none;border-color:rgba(201,171,110,0.55);background:rgba(201,171,110,0.04)}
+    .eye{position:absolute;right:14px;width:20px;height:20px;color:var(--muted-2);background:none;border:none;cursor:pointer;padding:0;display:flex}
+    .eye:hover{color:var(--gold)}
+
+    .btn{
+      width:100%; height:54px; margin-top:8px; border:none; border-radius:8px; cursor:pointer;
+      background:linear-gradient(92deg,#b58f4e,#dcc088 48%,#b58f4e);
+      color:#1a1408; font-family:'Cinzel',serif; font-weight:600; font-size:13px; letter-spacing:.28em;
+      padding-left:.28em; position:relative; display:flex; align-items:center; justify-content:center; gap:0;
+      box-shadow:0 10px 30px -12px rgba(201,171,110,0.5); transition:filter .25s, box-shadow .25s;
+    }
+    .btn:hover{filter:brightness(1.08);box-shadow:0 14px 40px -12px rgba(201,171,110,0.7)}
+    .btn:active{filter:brightness(.96)}
+    .btn .orn{position:absolute;width:12px;height:12px;border:1px solid rgba(26,20,8,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .btn .orn::after{content:"";width:3px;height:3px;background:rgba(26,20,8,0.7);border-radius:50%}
+    .btn .orn.l{left:18px}.btn .orn.r{right:18px}
+    .btn[disabled]{opacity:.7;cursor:progress}
+
+    .recover{text-align:center;margin-top:20px}
+    .recover a{font-size:17px;color:#b8b1a2}
+    .recover a:hover{color:var(--gold-hi)}
+
+    .foot-node{display:flex;align-items:center;gap:10px;margin:34px 0 16px}
+    .foot-node .ln{width:70px;height:1px;background:linear-gradient(90deg,transparent,rgba(201,171,110,0.35))}
+    .foot-node .ln.r{background:linear-gradient(90deg,rgba(201,171,110,0.35),transparent)}
+    .foot-node .dot{width:7px;height:7px;border:1px solid var(--gold);border-radius:50%}
+    .motto{font-family:'Cormorant Garamond',serif;font-size:19px;color:#8f8878;text-align:center;letter-spacing:.02em}
+    .join{margin-top:14px;font-size:16px;color:var(--muted-2);text-align:center}
+
+    /* messages */
+    .msg{width:100%;margin:0 0 18px;padding:12px 16px;border-radius:8px;font-size:16px;display:none;line-height:1.4}
+    .msg.err{display:block;background:rgba(150,60,60,0.12);border:1px solid rgba(180,90,90,0.35);color:#e6b8b0}
+    .msg.ok{display:block;background:rgba(90,130,90,0.12);border:1px solid rgba(110,150,110,0.35);color:#bfe0bd}
+    .msg.info{display:block;background:rgba(201,171,110,0.08);border:1px solid rgba(201,171,110,0.28);color:#dcc98f}
+
+    @media (max-width:900px){
+      .pillar{display:none}
+      .card{padding:34px 26px 30px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Column symbol (drawn once, used twice) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="bd-col" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#d8bd85"/>
+        <stop offset="0.5" stop-color="#a9884f"/>
+        <stop offset="1" stop-color="#5f4a26"/>
+      </linearGradient>
+      <symbol id="col" viewBox="0 0 140 780">
+        <g fill="none" stroke="url(#bd-col)" stroke-width="1.1" stroke-linejoin="round">
+          <!-- abacus -->
+          <rect x="12" y="2" width="116" height="15"/>
+          <!-- echinus flare -->
+          <path d="M20 17 L120 17 L104 46 L36 46 Z"/>
+          <line x1="30" y1="52" x2="110" y2="52"/>
+          <line x1="33" y1="58" x2="107" y2="58"/>
+          <!-- shaft outline with slight entasis -->
+          <path d="M40 62 C35 250 35 520 42 700"/>
+          <path d="M100 62 C105 250 105 520 98 700"/>
+          <!-- flutes -->
+          <path d="M49 66 C45 250 45 520 50 696" stroke-width="0.7" opacity="0.7"/>
+          <path d="M58 66 C55 250 55 520 59 696" stroke-width="0.7" opacity="0.7"/>
+          <path d="M67 66 C65 250 65 520 68 696" stroke-width="0.7" opacity="0.7"/>
+          <line x1="70" y1="66" x2="70" y2="696" stroke-width="0.7" opacity="0.7"/>
+          <path d="M73 66 C75 250 75 520 72 696" stroke-width="0.7" opacity="0.7"/>
+          <path d="M82 66 C85 250 85 520 81 696" stroke-width="0.7" opacity="0.7"/>
+          <path d="M91 66 C95 250 95 520 90 696" stroke-width="0.7" opacity="0.7"/>
+          <!-- medallion: circle + line (the watcher) -->
+          <circle cx="70" cy="212" r="10"/>
+          <line x1="70" y1="198" x2="70" y2="226"/>
+          <!-- base -->
+          <path d="M30 700 C30 710 32 714 34 716 L106 716 C108 714 110 710 110 700"/>
+          <rect x="22" y="716" width="96" height="16"/>
+          <rect x="12" y="732" width="116" height="18"/>
+          <rect x="4" y="750" width="132" height="20"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <main class="stage">
+    <svg class="pillar left"><use href="#col"/></svg>
+    <svg class="pillar right"><use href="#col"/></svg>
+
+    <div class="inner">
+      <!-- sigil: sun | moon -->
+      <svg class="sigil" viewBox="0 0 62 78" fill="none" aria-hidden="true">
+        <circle cx="31" cy="39" r="4" fill="#c9ab6e"/>
+        <line x1="31" y1="4" x2="31" y2="12" stroke="#c9ab6e" stroke-width="1"/>
+        <g transform="translate(0,20)">
+          <circle cx="31" cy="19" r="18" stroke="#c9ab6e" stroke-width="1.2"/>
+          <line x1="31" y1="1" x2="31" y2="37" stroke="#c9ab6e" stroke-width="1.2"/>
+          <path d="M31 3 A16 16 0 0 1 31 35 A12.5 19 0 0 0 31 3 Z" fill="#c9ab6e" opacity="0.92"/>
+        </g>
+        <circle cx="31" cy="74" r="1.6" fill="#c9ab6e"/>
+      </svg>
+
+      <h1 class="wordmark">BLACK&nbsp;DHARMA</h1>
+      <div class="rule"><span class="ln"></span><span class="dia"></span><span class="ln r"></span></div>
+
+      <form class="card" id="loginForm" novalidate>
+        <div class="card-title">PORTAL DE ACESSO</div>
+        <div class="node"><span class="ln"></span><span class="dot"></span><span class="ln"></span></div>
+
+        <div class="msg" id="msg" role="alert" aria-live="polite"></div>
+
+        <div class="field">
+          <label for="email">E-mail</label>
+          <div class="control">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="senha">Senha</label>
+          <div class="control">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            <input id="senha" name="senha" type="password" autocomplete="current-password" placeholder="" required>
+            <button class="eye" type="button" id="toggleEye" aria-label="Mostrar senha">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn" type="submit" id="submitBtn">
+          <span class="orn l"></span>
+          ENTRAR NA ORDEM
+          <span class="orn r"></span>
+        </button>
+
+        <div class="recover"><a href="recuperar.html">Recuperar acesso</a></div>
+      </form>
+
+      <div class="foot-node"><span class="ln"></span><span class="dot"></span><span class="ln r"></span></div>
+      <div class="motto">O conhecimento exige presença.</div>
+      <div class="join">Ainda não pertence? <a href="cadastro.html">Solicitar iniciação</a></div>
+    </div>
+  </main>
+
+  <!-- Supabase SDK (safe: public library) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    // Show/hide password
+    (function(){
+      var eye = document.getElementById('toggleEye');
+      var pw = document.getElementById('senha');
+      if(eye && pw){
+        eye.addEventListener('click', function(){
+          var show = pw.type === 'password';
+          pw.type = show ? 'text' : 'password';
+          eye.setAttribute('aria-label', show ? 'Ocultar senha' : 'Mostrar senha');
+          eye.style.color = show ? '#c9ab6e' : '';
+        });
+      }
+    })();
+
+    // Login submit — delegates to auth.js (BD.signIn). Falls back to demo mode.
+    document.getElementById('loginForm').addEventListener('submit', async function(e){
+      e.preventDefault();
+      var msg = document.getElementById('msg');
+      var btn = document.getElementById('submitBtn');
+      var email = document.getElementById('email').value.trim();
+      var senha = document.getElementById('senha').value;
+      msg.className = 'msg';
+
+      if(!email || !senha){
+        msg.className = 'msg err'; msg.textContent = 'Preencha e-mail e senha.'; return;
+      }
+      btn.setAttribute('disabled','true');
+      try{
+        if(window.BD && window.BD.ready){
+          var res = await window.BD.signIn(email, senha);
+          if(res.error){ msg.className='msg err'; msg.textContent = window.BD.humanError(res.error); }
+          else { msg.className='msg ok'; msg.textContent='Acesso concedido. Redirecionando…'; setTimeout(function(){ location.href='painel.html'; }, 700); }
+        } else {
+          // Modo demonstração: entra direto na área do membro (dados locais).
+          try{ if(email) localStorage.setItem('bd_demo_name', email.split('@')[0]); }catch(_){}
+          msg.className='msg info';
+          msg.textContent='Modo demonstração — abrindo a área do membro…';
+          setTimeout(function(){ location.href='painel.html'; }, 650);
+        }
+      }catch(err){
+        msg.className='msg err'; msg.textContent='Algo falhou. Tente novamente.';
+      }finally{
+        btn.removeAttribute('disabled');
+      }
+    });
+  </script>
+</body>
+</html>

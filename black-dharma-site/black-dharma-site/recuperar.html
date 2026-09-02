@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Black Dharma · Recuperar acesso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400&display=swap">
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+  <main class="mini">
+    <div class="box">
+      <svg class="sig" width="48" height="60" viewBox="0 0 62 78" fill="none" style="margin:0 auto">
+        <circle cx="31" cy="39" r="4" fill="#c9ab6e"/><line x1="31" y1="4" x2="31" y2="12" stroke="#c9ab6e" stroke-width="1"/>
+        <g transform="translate(0,20)"><circle cx="31" cy="19" r="18" stroke="#c9ab6e" stroke-width="1.2"/><line x1="31" y1="1" x2="31" y2="37" stroke="#c9ab6e" stroke-width="1.2"/><path d="M31 3 A16 16 0 0 1 31 35 A12.5 19 0 0 0 31 3 Z" fill="#c9ab6e" opacity="0.92"/></g>
+      </svg>
+      <div class="wm">BLACK DHARMA</div>
+      <h2>RECUPERAR ACESSO</h2>
+      <p class="sub">Informe o e-mail da sua iniciação. Enviaremos um elo para você definir uma nova palavra.</p>
+
+      <form class="card" id="form" novalidate>
+        <div class="msg" id="msg" role="alert" aria-live="polite"></div>
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" autocomplete="email" required>
+        </div>
+        <button class="btn-gold" type="submit" id="btn">ENVIAR O ELO</button>
+      </form>
+      <div class="back">Lembrou? <a href="index.html">Cruzar o limiar</a></div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.getElementById('form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      var msg=document.getElementById('msg'), btn=document.getElementById('btn');
+      var email=document.getElementById('email').value.trim();
+      msg.className='msg';
+      if(!email){msg.className='msg err';msg.textContent='Informe seu e-mail.';return;}
+      btn.setAttribute('disabled','true');
+      try{
+        if(window.BD && window.BD.ready){
+          var r=await window.BD.resetPassword(email);
+          // Não revelamos se o e-mail existe (boa prática de segurança).
+          msg.className='msg ok';
+          msg.textContent='Se este e-mail pertencer à Ordem, o elo de recuperação já está a caminho.';
+        }else{
+          msg.className='msg info';
+          msg.textContent='Modo demonstração: o envio real de e-mail funciona após ligar o Supabase.';
+        }
+      }catch(err){msg.className='msg err';msg.textContent='Não foi possível enviar agora.';}
+      finally{btn.removeAttribute('disabled');}
+    });
+  </script>
+</body>
+</html>
